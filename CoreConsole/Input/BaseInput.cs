@@ -3,23 +3,51 @@ using System.Collections.Generic;
 
 namespace CoreConsole.Input
 {
-    public class CommandInput
+    public class BaseInput : IInput
     {
         private readonly string[] _tokens;
         private readonly IList<string> _remainingTokens;
-        private readonly InputDefinition _definition;
-        private readonly IDictionary<string, string> _arguments;
-        private readonly IDictionary<string, string> _options;
+        private InputDefinition _definition;
+        private IDictionary<string, string> _arguments = new Dictionary<string, string>();
+        private IDictionary<string, string> _options = new Dictionary<string, string>();
         
-        public CommandInput(string[] tokens, InputDefinition definition = null)
+        public BaseInput(string[] tokens, InputDefinition definition = null)
         {
             _tokens = tokens;
             _remainingTokens = new List<string>(_tokens);
-            _definition = definition ?? new InputDefinition();
+            Bind(definition ?? new InputDefinition());
+            
+
+            if (definition != null)
+            {
+                Validate();
+            }
+        }
+        
+        public void Bind(InputDefinition definition)
+        {
             _arguments = new Dictionary<string, string>();
             _options = new Dictionary<string, string>();
+            _definition = definition;
         }
 
+        public void Validate()
+        {
+            int missingArguments = 0;
+
+            foreach (var argument in _definition.GetArguments())
+            {
+                if (!_arguments.ContainsKey(argument.Key) && argument.Value.Mode == InputArgumentMode.Required)
+                {
+                    missingArguments++;
+                }
+            }
+
+            if (missingArguments > 0)
+            {
+                throw new InvalidOperationException("Not enough arguments");
+            }
+        }
 
         public void Parse()
         {
@@ -117,7 +145,7 @@ namespace CoreConsole.Input
 
             char[] itName = name.ToCharArray();
 
-            for(int i = 0; i < itName.Length; ++i)
+            for (int i = 0; i < itName.Length; ++i)
             {
                 string currentOption = itName[i].ToString();
                 if (_definition.HasShortcut(currentOption) == false)

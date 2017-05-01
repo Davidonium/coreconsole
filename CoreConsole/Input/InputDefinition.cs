@@ -24,7 +24,7 @@ namespace CoreConsole.Input
         {
             if (_arguments.ContainsKey(argument.Name))
             {
-                throw new InvalidOperationException("An argument with that name already exists");
+                throw new InvalidOperationException(String.Format("An argument with name {0} already exists", argument.Name));
             }
             
             if (argument.Mode == InputArgumentMode.Optional)
@@ -87,7 +87,7 @@ namespace CoreConsole.Input
         {
             return _options.ContainsKey(name);
         }
-
+        
         public IDictionary<string,InputArgument> GetArguments()
         {
             return new Dictionary<string,InputArgument>(_arguments);
