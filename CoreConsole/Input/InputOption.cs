@@ -32,15 +32,19 @@ namespace CoreConsole.Input
             {
                 Name = name;
             }
+            
+            if (shortcut != null)
+            {
+                if (shortcut.StartsWith("-"))
+                {
+                    Shortcut = shortcut.Substring(1);
+                }
+                else
+                {
+                    Shortcut = shortcut.TrimStart('-');
+                }
+            }
 
-            if (shortcut.StartsWith("-"))
-            {
-                Shortcut = shortcut.Substring(1);
-            }
-            else
-            {
-                Shortcut = shortcut.TrimStart('-');
-            }
             Mode = mode;
             DefaultValue = defaultValue;
             Description = description;

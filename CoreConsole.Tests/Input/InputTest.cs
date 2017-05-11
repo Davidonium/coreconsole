@@ -8,11 +8,10 @@ namespace CoreConsole.Tests
     public class InputTest
     {
         [Fact]
-        public void TestOptionParsedCorrectly()
+        public void TestLongOptionParsedSuccess()
         {
             string[] args = new string[] {
-                "--first",
-                "the first"
+                "--first", "the first"
             };
 
             InputDefinition reqs = new InputDefinition();
@@ -27,4 +26,5 @@ namespace CoreConsole.Tests
             Assert.Equal(input.GetOption("first"), "the first");
         }
     }
+    
 }
