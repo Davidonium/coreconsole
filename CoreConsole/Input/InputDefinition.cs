@@ -8,7 +8,7 @@ namespace CoreConsole.Input
         private readonly IDictionary<string,InputArgument> _arguments;
         private readonly IDictionary<string,InputOption> _options;
         private readonly IDictionary<string,string> _shortcuts;
-        private readonly IDictionary<int, string> _argumentPositions;
+        private readonly IList<string> _argumentPositions;
         private bool _hasOptionalArgument;
 
         public InputDefinition()
@@ -16,7 +16,7 @@ namespace CoreConsole.Input
             _arguments = new Dictionary<string,InputArgument>();
             _options = new Dictionary<string,InputOption>();
             _shortcuts = new Dictionary<string,string>();
-            _argumentPositions = new Dictionary<int, string>();
+            _argumentPositions = new List<string>();
             _hasOptionalArgument = false;
         }
 
@@ -38,7 +38,7 @@ namespace CoreConsole.Input
 
 
             _arguments.Add(argument.Name, argument);
-            _argumentPositions.Add(_argumentPositions.Count, argument.Name);
+            _argumentPositions.Add(argument.Name);
         }
 
         public void AddOption(InputOption option)
@@ -75,11 +75,6 @@ namespace CoreConsole.Input
 
         public bool HasArgument(int pos)
         {
-            if (!_argumentPositions.ContainsKey(pos))
-            {
-                return false;
-            }
-            
             return _arguments.ContainsKey(_argumentPositions[pos]);
         }
 
