@@ -2,7 +2,7 @@ using System;
 
 namespace CoreConsole.Exceptions
 {
-    public class InvalidArgumentException : Exception
+    public class InvalidArgumentException : ConsoleException
     {
         public InvalidArgumentException()
         {
