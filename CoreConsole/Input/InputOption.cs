@@ -16,12 +16,11 @@ namespace CoreConsole.Input
         public string Description { get; private set; }
 
 
-        public InputOption(
-            string name,
-            string shortcut = null, 
-            InputOptionValueMode mode = InputOptionValueMode.None, 
-            string description = "", 
-            string defaultValue = null)
+        public InputOption(string name,
+                           string shortcut = null, 
+                           InputOptionValueMode mode = InputOptionValueMode.None, 
+                           string description = "", 
+                           string defaultValue = null)
         {
 
             if (name.StartsWith("--")) 

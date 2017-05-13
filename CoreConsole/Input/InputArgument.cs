@@ -31,7 +31,10 @@ namespace CoreConsole.Input
             } 
         }
 
-        public InputArgument(string name, InputArgumentMode mode = InputArgumentMode.Required, string description = "", string defaultValue = null)
+        public InputArgument(string name, 
+                             InputArgumentMode mode = InputArgumentMode.Required, 
+                             string description = "", 
+                             string defaultValue = null)
         {
             Name = name;
             Mode = mode;
