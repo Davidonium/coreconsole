@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using CoreConsole.Exceptions;
 
 namespace CoreConsole.Input
 {
@@ -24,7 +25,7 @@ namespace CoreConsole.Input
         {
             if (_arguments.ContainsKey(argument.Name))
             {
-                throw new InvalidOperationException(String.Format("An argument with name {0} already exists", argument.Name));
+                throw new LogicException(String.Format("An argument with name {0} already exists", argument.Name));
             }
             
             if (argument.Mode == InputArgumentMode.Optional)
@@ -33,7 +34,7 @@ namespace CoreConsole.Input
             } 
             else if (_hasOptionalArgument)
             {
-                throw new InvalidOperationException("Cannot add an argument after an optional, arguments are ordered");
+                throw new LogicException("Cannot add an argument after an optional, arguments are ordered");
             }
 
 
@@ -45,12 +46,12 @@ namespace CoreConsole.Input
         {
             if (_options.ContainsKey(option.Name))
             {
-                throw new InvalidOperationException(String.Format("An option with \"{0}\" name already exists", option.Name));
+                throw new LogicException(String.Format("An option with \"{0}\" name already exists", option.Name));
             }
 
             if (_shortcuts.ContainsKey(option.Shortcut))
             {
-                throw new InvalidOperationException(String.Format("There already is a \"{0}\" shortcut", option.Shortcut));
+                throw new LogicException(String.Format("There already is a \"{0}\" shortcut", option.Shortcut));
             }
 
             _shortcuts.Add(option.Shortcut, option.Name);

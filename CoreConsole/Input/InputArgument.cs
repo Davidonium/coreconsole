@@ -1,4 +1,5 @@
 using System;
+using CoreConsole.Exceptions;
 
 namespace CoreConsole.Input
 {
@@ -23,7 +24,7 @@ namespace CoreConsole.Input
             {
                 if (value != null && Mode == InputArgumentMode.Required)
                 {
-                    throw new InvalidOperationException("Cannot set a default value when the argument is required");
+                    throw new RuntimeException("Cannot set a default value when the argument is required");
                 }
 
                 _defaultValue = value;

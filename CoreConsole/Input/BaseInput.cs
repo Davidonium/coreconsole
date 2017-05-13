@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using CoreConsole.Exceptions;
 
 namespace CoreConsole.Input
 {
@@ -16,7 +17,6 @@ namespace CoreConsole.Input
             _tokens = tokens;
             _remainingTokens = new List<string>(_tokens);
             Bind(definition ?? new InputDefinition());
-            
 
             if (definition != null)
             {
@@ -45,7 +45,7 @@ namespace CoreConsole.Input
 
             if (missingArguments > 0)
             {
-                throw new InvalidOperationException("Not enough arguments");
+                throw new RuntimeException("Not enough arguments");
             }
         }
 
@@ -132,10 +132,10 @@ namespace CoreConsole.Input
                 var definedArguments = _definition.GetArguments();
                 if (definedArguments.Count > 0)
                 {
-                    throw new InvalidOperationException(String.Format("Too many arguments, expected {0}", String.Join(" ", definedArguments.Keys)));
+                    throw new RuntimeException(String.Format("Too many arguments, expected {0}", String.Join(" ", definedArguments.Keys)));
                 }
 
-                throw new InvalidOperationException("No arguments expected");
+                throw new RuntimeException("No arguments expected");
             }
 
         }
@@ -150,7 +150,7 @@ namespace CoreConsole.Input
                 string currentOption = itName[i].ToString();
                 if (_definition.HasShortcut(currentOption) == false)
                 {
-                    throw new InvalidOperationException(String.Format("The option \"{0}\" does not exist", currentOption));
+                    throw new RuntimeException(String.Format("The option \"{0}\" does not exist", currentOption));
                 }
 
                 InputOption option = _definition.GetOptionForShortcut(currentOption);
@@ -171,7 +171,7 @@ namespace CoreConsole.Input
         {
             if (_definition.HasShortcut(name) == false)
             {
-                throw new InvalidOperationException(String.Format("The option \"{0}\" does not exist", name));
+                throw new RuntimeException(String.Format("The option \"{0}\" does not exist", name));
             }
 
             AddLongOption(_definition.GetOptionForShortcut(name).Name, val);
@@ -181,7 +181,7 @@ namespace CoreConsole.Input
         {
             if (_definition.HasOption(name) == false)
             {
-                 throw new InvalidOperationException(String.Format("The option \"{0}\" does not exist", name));
+                 throw new RuntimeException(String.Format("The option \"{0}\" does not exist", name));
             }
 
             InputOption option = _definition.GetOption(name);
@@ -189,7 +189,7 @@ namespace CoreConsole.Input
 
             if (option.AcceptsValue() == false && val != null)
             {
-                throw new InvalidOperationException(String.Format("The option \"{0}\" does not accept a value", option.Name));
+                throw new RuntimeException(String.Format("The option \"{0}\" does not accept a value", option.Name));
             }
 
             if (val == null && option.AcceptsValue() && _remainingTokens.Count > 0)
@@ -204,7 +204,7 @@ namespace CoreConsole.Input
                 {
                     val = null;
                 }
-                else
+                else    
                 {
                     next.Insert(0, next);
                 }
@@ -215,7 +215,7 @@ namespace CoreConsole.Input
             {
                 if (option.Mode == InputOptionValueMode.Required)
                 {
-                    throw new InvalidOperationException(String.Format("The option {0} requires a value", name));
+                    throw new RuntimeException(String.Format("The option {0} requires a value", name));
                 }
                 val = option.Mode == InputOptionValueMode.Optional ? option.DefaultValue : "";
             }
@@ -231,6 +231,26 @@ namespace CoreConsole.Input
         public string GetArgument(string name)
         {
             return _arguments[name];
+        }
+
+        public void SetOption(string name, string value)
+        {
+            if (!_definition.HasOption(name))
+            {
+                throw new InvalidArgumentException(String.Format("The \"{0}\" option does not exist", name));
+            }
+
+            _options[name] = value;
+        }
+
+        public void SetArgument(string name, string value)
+        {
+            if (!_definition.HasArgument(name))
+            {
+                throw new InvalidArgumentException(String.Format("The \"{0}\" argument does not exist", name));
+            }
+
+            _arguments[name] = value;
         }
 
         public bool HasOption(string name)
