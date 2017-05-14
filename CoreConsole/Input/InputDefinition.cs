@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using CoreConsole.Exceptions;
 
 namespace CoreConsole.Input
@@ -55,17 +56,38 @@ namespace CoreConsole.Input
             }
 
             _shortcuts.Add(option.Shortcut, option.Name);
-            
             _options.Add(option.Name, option);
         }
 
         public InputArgument GetArgument(string name)
         {
+            if (!HasArgument(name))
+            {
+                throw new InvalidArgumentException(String.Format("The \"{0}\" argument does not exist", name));
+            }
+
             return _arguments[name];
+        }
+
+        public InputArgument GetArgument(int pos)
+        {
+            string argumentName = _argumentPositions.ElementAtOrDefault(pos);
+
+            if (argumentName == null) 
+            {
+                throw new InvalidArgumentException(String.Format("The argument at position {0} does not exist", pos));
+            }
+
+            return GetArgument(argumentName);
         }
 
         public InputOption GetOption(string name)
         {
+            if (!HasOption(name))
+            {
+                throw new InvalidArgumentException(String.Format("The \"--{0}\" option does not exist", name));
+            }
+            
             return _options[name];
         }
 
@@ -76,7 +98,7 @@ namespace CoreConsole.Input
 
         public bool HasArgument(int pos)
         {
-            return _arguments.ContainsKey(_argumentPositions[pos]);
+            return _arguments.ContainsKey(_argumentPositions.ElementAtOrDefault(pos));
         }
 
         public bool HasOption(string name)
@@ -112,11 +134,6 @@ namespace CoreConsole.Input
         public InputOption GetOptionForShortcut(string shortcut)
         {
             return GetOption(ShortcutToName(shortcut));
-        }
-
-        public InputArgument GetArgument(int pos)
-        {
-            return _arguments[_argumentPositions[pos]];
         }
     }
 }
