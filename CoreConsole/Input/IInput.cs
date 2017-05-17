@@ -18,6 +18,6 @@ namespace CoreConsole.Input
 
         bool HasParameterOption(string value, bool onlyParams = false);
 
-        string GetParameterOption(string value, bool onlyParams = false);
+        string GetParameterOption(string value, string defaultValue = null, bool onlyParams = false);
     }
 }
