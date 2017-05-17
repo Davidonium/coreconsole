@@ -3,7 +3,7 @@ using CoreConsole.Exceptions;
 
 namespace CoreConsole.Input
 {
-    public enum InputArgumentMode 
+    public enum InputArgumentMode
     {
         Required,
         Optional
@@ -15,12 +15,13 @@ namespace CoreConsole.Input
         public InputArgumentMode Mode { get; private set; }
         public string Description { get; private set; }
         private string _defaultValue;
-        public string DefaultValue { 
+        public string DefaultValue
+        {
             get
             {
                 return _defaultValue;
-            } 
-            private set     
+            }
+            private set
             {
                 if (value != null && Mode == InputArgumentMode.Required)
                 {
@@ -28,12 +29,12 @@ namespace CoreConsole.Input
                 }
 
                 _defaultValue = value;
-            } 
+            }
         }
 
-        public InputArgument(string name, 
-                             InputArgumentMode mode = InputArgumentMode.Required, 
-                             string description = "", 
+        public InputArgument(string name,
+                             InputArgumentMode mode = InputArgumentMode.Required,
+                             string description = "",
                              string defaultValue = null)
         {
             Name = name;

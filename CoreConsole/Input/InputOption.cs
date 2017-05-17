@@ -1,12 +1,12 @@
 namespace CoreConsole.Input
 {
-    public enum InputOptionValueMode 
+    public enum InputOptionValueMode
     {
         Required,
         Optional,
         None
     }
-    
+
     public class InputOption
     {
         public string Name { get; private set; }
@@ -17,13 +17,13 @@ namespace CoreConsole.Input
 
 
         public InputOption(string name,
-                           string shortcut = null, 
-                           InputOptionValueMode mode = InputOptionValueMode.None, 
-                           string description = "", 
+                           string shortcut = null,
+                           InputOptionValueMode mode = InputOptionValueMode.None,
+                           string description = "",
                            string defaultValue = null)
         {
 
-            if (name.StartsWith("--")) 
+            if (name.StartsWith("--"))
             {
                 Name = name.Substring(2);
             }
@@ -31,7 +31,7 @@ namespace CoreConsole.Input
             {
                 Name = name;
             }
-            
+
             if (shortcut != null)
             {
                 if (shortcut.StartsWith("-"))
