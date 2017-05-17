@@ -321,7 +321,7 @@ namespace CoreConsole.Input
 
             }
 
-            return null;
+            return defaultValue;
         }
     }
 
