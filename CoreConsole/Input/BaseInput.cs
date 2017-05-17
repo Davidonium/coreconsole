@@ -11,7 +11,7 @@ namespace CoreConsole.Input
         private InputDefinition _definition;
         private IDictionary<string, string> _arguments = new Dictionary<string, string>();
         private IDictionary<string, string> _options = new Dictionary<string, string>();
-        
+
         public BaseInput(string[] tokens, InputDefinition definition = null)
         {
             _tokens = tokens;
@@ -23,7 +23,7 @@ namespace CoreConsole.Input
                 Validate();
             }
         }
-        
+
         public void Bind(InputDefinition definition)
         {
             _arguments = new Dictionary<string, string>();
@@ -52,7 +52,7 @@ namespace CoreConsole.Input
         public void Parse()
         {
             bool parseOptions = true;
-            
+
             while (_remainingTokens.Count > 0)
             {
                 string token = _remainingTokens[0];
@@ -77,7 +77,7 @@ namespace CoreConsole.Input
 
             }
         }
-        
+
         private void ParseShortOption(string token)
         {
             string name = token.Substring(1);
@@ -166,7 +166,7 @@ namespace CoreConsole.Input
                 }
             }
         }
-        
+
         private void AddShortOption(string name, string val = null)
         {
             if (_definition.HasShortcut(name) == false)
@@ -181,7 +181,7 @@ namespace CoreConsole.Input
         {
             if (_definition.HasOption(name) == false)
             {
-                 throw new RuntimeException(String.Format("The option \"{0}\" does not exist", name));
+                throw new RuntimeException(String.Format("The option \"{0}\" does not exist", name));
             }
 
             InputOption option = _definition.GetOption(name);
@@ -204,7 +204,7 @@ namespace CoreConsole.Input
                 {
                     val = null;
                 }
-                else    
+                else
                 {
                     next.Insert(0, next);
                 }
@@ -261,6 +261,67 @@ namespace CoreConsole.Input
         public bool HasArgument(string name)
         {
             return _arguments.ContainsKey(name);
+        }
+
+        public string GetFirstArgument()
+        {
+            foreach (string token in _tokens)
+            {
+                if (!String.IsNullOrEmpty(token) && token.Substring(0, 1) == "-")
+                {
+                    continue;
+                }
+
+                return token;
+            }
+
+            return null;
+        }
+
+        public bool HasParameterOption(string value, bool onlyParams = false)
+        {
+            foreach (string token in _tokens)
+            {
+                if (onlyParams && token == "--")
+                {
+                    return false;
+                }
+
+                if (token == value || token.IndexOf(value + "=") == 0)
+                {
+                    return true;
+                }
+
+            }
+
+            return false;
+        }
+
+        public string GetParameterOption(string value, string defaultValue = null, bool onlyParams = false)
+        {
+            for (int i = 0; i < _tokens.Length; i++)
+            {
+                string token = _tokens[i];
+                if (onlyParams && token == "--")
+                {
+                    return null;
+                }
+                
+                int position = token.IndexOf(value);
+                if (token == value || position == 0)
+                {
+                    int equalsPosition = token.IndexOf("=");
+                    if (equalsPosition != -1)
+                    {
+                        return token.Substring(equalsPosition + 1);
+                    }
+
+                    return _tokens[i + 1];
+                }
+
+            }
+
+            return null;
         }
     }
 

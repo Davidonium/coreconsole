@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace CoreConsole.Input
 {
     interface IInput
@@ -11,5 +13,11 @@ namespace CoreConsole.Input
 
         bool HasArgument(string name);
         string GetArgument(string name);
+
+        string GetFirstArgument();
+
+        bool HasParameterOption(string value, bool onlyParams = false);
+
+        string GetParameterOption(string value, bool onlyParams = false);
     }
 }
