@@ -1,19 +1,17 @@
 using System;
 using Xunit;
 using CoreConsole.Input;
+using System.Collections.Generic;
+using Xunit.Extensions;
 
 namespace CoreConsole.Tests
 {
 
     public class InputTest
     {
-        [Fact]
-        public void TestLongOptionParsedSuccess()
+        [Theory, MemberData("OneRequiredOption")]
+        public void TestOptionParsedSuccess(string[] args)
         {
-            string[] args = new string[] {
-                "--first", "the first"
-            };
-
             InputDefinition reqs = new InputDefinition();
             reqs.AddOption(new InputOption("first", "f", InputOptionValueMode.Required));
             
@@ -24,6 +22,18 @@ namespace CoreConsole.Tests
             input.Parse();
             Assert.True(input.HasOption("first"), "The input is missing the option first");
             Assert.Equal(input.GetOption("first"), "the first");
+        }
+
+        public static IEnumerable<object[]> OneRequiredOption
+        {
+            get
+            {
+                return new[]
+                {
+                    new object[] { new string[] { "--first", "the first" } },
+                    new object[] { new string[] { "-f", "the first" } },
+                };
+            }
         }
     }
     
