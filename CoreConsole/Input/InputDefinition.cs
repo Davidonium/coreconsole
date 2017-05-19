@@ -7,17 +7,17 @@ namespace CoreConsole.Input
 {
     public class InputDefinition
     {
-        private readonly IDictionary<string,InputArgument> _arguments;
-        private readonly IDictionary<string,InputOption> _options;
-        private readonly IDictionary<string,string> _shortcuts;
+        private readonly IDictionary<string, InputArgument> _arguments;
+        private readonly IDictionary<string, InputOption> _options;
+        private readonly IDictionary<string, string> _shortcuts;
         private readonly IList<string> _argumentPositions;
         private bool _hasOptionalArgument;
 
         public InputDefinition()
         {
-            _arguments = new Dictionary<string,InputArgument>();
-            _options = new Dictionary<string,InputOption>();
-            _shortcuts = new Dictionary<string,string>();
+            _arguments = new Dictionary<string, InputArgument>();
+            _options = new Dictionary<string, InputOption>();
+            _shortcuts = new Dictionary<string, string>();
             _argumentPositions = new List<string>();
             _hasOptionalArgument = false;
         }
@@ -28,11 +28,11 @@ namespace CoreConsole.Input
             {
                 throw new LogicException(String.Format("An argument with name {0} already exists", argument.Name));
             }
-            
+
             if (argument.Mode == InputArgumentMode.Optional)
             {
                 _hasOptionalArgument = true;
-            } 
+            }
             else if (_hasOptionalArgument)
             {
                 throw new LogicException("Cannot add an argument after an optional, arguments are ordered");
@@ -73,7 +73,7 @@ namespace CoreConsole.Input
         {
             string argumentName = _argumentPositions.ElementAtOrDefault(pos);
 
-            if (argumentName == null) 
+            if (argumentName == null)
             {
                 throw new InvalidArgumentException(String.Format("The argument at position {0} does not exist", pos));
             }
@@ -87,7 +87,7 @@ namespace CoreConsole.Input
             {
                 throw new InvalidArgumentException(String.Format("The \"--{0}\" option does not exist", name));
             }
-            
+
             return _options[name];
         }
 
@@ -105,20 +105,20 @@ namespace CoreConsole.Input
         {
             return _options.ContainsKey(name);
         }
-        
-        public IDictionary<string,InputArgument> GetArguments()
+
+        public IDictionary<string, InputArgument> GetArguments()
         {
-            return new Dictionary<string,InputArgument>(_arguments);
+            return new Dictionary<string, InputArgument>(_arguments);
         }
 
-        public IDictionary<string,InputOption> GetOptions()
+        public IDictionary<string, InputOption> GetOptions()
         {
-            return new Dictionary<string,InputOption>(_options);
+            return new Dictionary<string, InputOption>(_options);
         }
 
-        public IDictionary<string,string> GetShortcuts()
+        public IDictionary<string, string> GetShortcuts()
         {
-            return new Dictionary<string,string>(_shortcuts);
+            return new Dictionary<string, string>(_shortcuts);
         }
 
         public bool HasShortcut(string name)
