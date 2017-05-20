@@ -17,9 +17,9 @@ namespace CoreConsole.Tests
 
             Assert.NotNull(reqs.GetOption("first"));
 
-            BaseInput input = new BaseInput(args, reqs);
+            BaseInput input = new BaseInput(args);
 
-            input.Parse();
+            input.Bind(reqs);
             Assert.True(input.HasOption("first"), "The input is missing the option first");
             Assert.Equal(input.GetOption("first"), "the first");
         }

@@ -6,7 +6,6 @@ namespace CoreConsole.Input
     {
         void Bind(InputDefinition definition);
         void Validate();
-        void Parse();
 
         bool HasOption(string name);
         string GetOption(string name);

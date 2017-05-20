@@ -16,11 +16,15 @@ namespace CoreConsole.Input
         {
             _tokens = tokens;
             _remainingTokens = new List<string>(_tokens);
-            Bind(definition ?? new InputDefinition());
 
             if (definition != null)
             {
+                Bind(definition);
                 Validate();
+            }
+            else
+            {
+                _definition = new InputDefinition();
             }
         }
 
@@ -29,6 +33,7 @@ namespace CoreConsole.Input
             _arguments = new Dictionary<string, string>();
             _options = new Dictionary<string, string>();
             _definition = definition;
+            Parse();
         }
 
         public void Validate()
@@ -49,7 +54,7 @@ namespace CoreConsole.Input
             }
         }
 
-        public void Parse()
+        protected void Parse()
         {
             bool parseOptions = true;
 
